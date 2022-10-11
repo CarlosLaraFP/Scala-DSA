@@ -1160,6 +1160,26 @@ class UdacitySpec extends AnyFlatSpec with Matchers {
     arrayProduct(Array(1, -1)) shouldEqual Array(-1, 1)
   }
 
+  "Missing Number" should "pass all tests" in {
+    //
+    missingNumber(Array(3, 0, 1)) shouldEqual 2
+    missingNumber(Array(0 , 1)) shouldEqual 2
+    missingNumber(Array(9, 6, 4, 2, 3, 5, 7, 0, 1)) shouldEqual 8
+    missingNumber(Array(1 , 0)) shouldEqual 2
+  }
 
+  "First Unique Character in a String" should "pass all tests" in {
+    //
+    firstUniqueChar("leetcode") shouldEqual 0
+    firstUniqueChar("loveleetcode") shouldEqual 2
+    firstUniqueChar("aabb") shouldEqual -1
+    firstUniqueChar("") shouldEqual -1
+    firstUniqueChar("dddccdbba") shouldEqual 8
+  }
+
+  "" should "pass all tests" in {
+    //
+
+  }
 }
 

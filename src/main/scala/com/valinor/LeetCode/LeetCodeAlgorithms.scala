@@ -441,6 +441,35 @@ object LeetCodeAlgorithms extends App {
     }
   }
 
+  def missingNumber(nums: Array[Int]): Int = {
+    /*
+      Given an array nums containing n distinct numbers in the range [0, n],
+      return the only number in the range that is missing from the array.
+      Gauss' Formula: sum of the first n natural numbers.
+      Time complexity: O(N)
+    */
+    val gaussSum: Int = nums.length * (nums.length + 1) / 2
+    gaussSum - nums.sum
+  }
+
+  def firstUniqueChar(s: String): Int = {
+    /*
+      Given a string s, find the first non-repeating character in it and return its index.
+      If it does not exist, return -1
+      This is O(2N)
+    */
+    val charCounts = s.foldLeft(Map.empty[Char, Int].withDefaultValue(0)) {
+      case (map, char) => map.updated(char, map(char) + 1)
+    }
+    @tailrec
+    def firstHelper(index: Int): Int = {
+      if (index == s.length) -1
+      else if (charCounts(s(index)) == 1) index
+      else firstHelper(index + 1)
+    }
+    firstHelper(0)
+  }
+
 
 }
 
