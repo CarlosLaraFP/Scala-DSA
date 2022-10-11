@@ -1177,9 +1177,15 @@ class UdacitySpec extends AnyFlatSpec with Matchers {
     firstUniqueChar("dddccdbba") shouldEqual 8
   }
 
-  "" should "pass all tests" in {
+  "Subarray Sum Equals K" should "pass all tests" in {
     //
-
+    subarraySumK(Array(1, 1, 1), 2) shouldEqual 2
+    subarraySumK(Array(1, 2, 3), 3) shouldEqual 2
+    subarraySumK(Array(1, 1, 1), 1) shouldEqual 3
+    subarraySumK(Array(1, 2, 1), 5) shouldEqual 0
+    subarraySumK(Array(6, 9, 4, 1, 2, 3), 3) shouldEqual 2
   }
+
+
 }
 

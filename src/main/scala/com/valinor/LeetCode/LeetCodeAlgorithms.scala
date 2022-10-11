@@ -470,6 +470,24 @@ object LeetCodeAlgorithms extends App {
     firstHelper(0)
   }
 
-
+  def subarraySumK(nums: Array[Int], k: Int): Int = {
+    /*
+      Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+      A subarray is a contiguous non-empty sequence of elements within an array.
+      First, what is the time complexity of this problem? O(N) with a Map (space O(N))
+      Store the cumulative sum at each index in a Map[cumulative sum, total occurrences of cumulative sum]
+      -If the difference came before, we just crossed a valid subarray-
+    */
+    @tailrec
+    def sumHelper(index: Int, map: Map[Int, Int], cumulativeSum: Int, count: Int): Int = {
+      if (index == nums.length) count
+      else {
+        val sum = cumulativeSum + nums(index)
+        val updatedCount = if (map.contains(sum - k)) count + map(sum - k) else count
+        sumHelper(index + 1, map.updated(sum, map(sum) + 1), sum, updatedCount)
+      }
+    }
+    sumHelper(0, Map(0 -> 1).withDefaultValue(0), 0, 0)
+  }
 }
 
