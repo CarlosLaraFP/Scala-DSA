@@ -476,7 +476,7 @@ object LeetCodeAlgorithms extends App {
       A subarray is a contiguous non-empty sequence of elements within an array.
       First, what is the time complexity of this problem? O(N) with a Map (space O(N))
       Store the cumulative sum at each index in a Map[cumulative sum, total occurrences of cumulative sum]
-      -If the difference came before, we just crossed a valid subarray-
+      If the difference came before, we just crossed a valid subarray
     */
     @tailrec
     def sumHelper(index: Int, map: Map[Int, Int], cumulativeSum: Int, count: Int): Int = {
@@ -489,5 +489,51 @@ object LeetCodeAlgorithms extends App {
     }
     sumHelper(0, Map(0 -> 1).withDefaultValue(0), 0, 0)
   }
+
+  def squaresSortedArray(nums: Array[Int]): Array[Int] = {
+    /*
+      Given an integer array nums sorted in non-decreasing order,
+      return an array of the squares of each number sorted in non-decreasing order.
+      Follow up: Squaring each element and sorting the new array is very trivial, could you find an O(n) solution using a different approach?
+
+      Array.ofDim[Int](nums.length)
+    */
+    @tailrec
+    def squaresHelper(i: Int, j: Int, squares: List[Int]): Array[Int] = {
+      if (i > j) squares.toArray
+      else if (i == j) squares.prepended(nums(i) * nums(j)).toArray
+      else {
+        val left = nums(i) * nums(i)
+        val right = nums(j) * nums(j)
+        if (right > left) squaresHelper(i, j - 1, right :: squares)
+        else if (left > right) squaresHelper(i + 1, j, left :: squares)
+        else squaresHelper(i + 1, j - 1, left :: right :: squares)
+      }
+    }
+    squaresHelper(0, nums.length - 1, List())
+  }
+
+  def validParentheses(s: String): Boolean = {
+    /*
+      Given a string s containing just the characters '(', ')', '{', '}', '[' and ']', determine if the input string is valid.
+      An input string is valid if:
+      Open brackets must be closed by the same type of brackets.
+      Open brackets must be closed in the correct order.
+      Every close bracket has a corresponding open bracket of the same type.
+      Push: (, {, [
+      Pop: ), }, ]
+      Time complexity: O(N)
+    */
+    val stack = s.foldLeft(List[Char]()) {
+      case (stack, char) if char == '(' || char == '{' || char == '[' => char :: stack
+      case (stack, char) if char == ')' && stack.headOption.contains('(') => stack.tail
+      case (stack, char) if char == '}' && stack.headOption.contains('{') => stack.tail
+      case (stack, char) if char == ']' && stack.headOption.contains('[') => stack.tail
+      case (stack, char) => char :: stack
+    }
+    if (stack.isEmpty) true else false
+  }
+
+  //def trappingRainWater
 }
 

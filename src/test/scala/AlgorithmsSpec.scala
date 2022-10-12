@@ -15,10 +15,13 @@ import scala.collection.immutable.{Queue => ImmutableQueue}
 import org.scalatest.flatspec._
 import org.scalatest.matchers.should._
 
-class UdacitySpec extends AnyFlatSpec with Matchers {
+class AlgorithmsSpec extends AnyFlatSpec with Matchers {
   /*
     Using Scalatest for systematic unit testing.
   */
+
+  // Udacity
+
   "A custom mutable doubly Linked List" should "behave as expected" in {
     val testList = new DoublyLinkedList[Int]()
     testList prepend 2
@@ -915,6 +918,7 @@ class UdacitySpec extends AnyFlatSpec with Matchers {
     lengthSubSequence(Array(9, 1, 4, 7, 3, -1, 0, 5, 8, -1, 6)) shouldEqual 7
   }
 
+  // LeetCode
 
   "Binary Search Algorithm" should "pass all tests" in {
     //
@@ -1186,6 +1190,36 @@ class UdacitySpec extends AnyFlatSpec with Matchers {
     subarraySumK(Array(6, 9, 4, 1, 2, 3), 3) shouldEqual 2
   }
 
+  "Squares of a Sorted Array" should "pass all tests" in {
+    //
+    squaresSortedArray(Array()) shouldEqual Array()
+    squaresSortedArray(Array(5)) shouldEqual Array(25)
+    squaresSortedArray(Array(0 , 0)) shouldEqual Array(0, 0)
+    squaresSortedArray(Array(-2, 0, 0)) shouldEqual Array(0, 0, 4)
+    squaresSortedArray(Array(-3, -2, -1, 1, 2, 3)) shouldEqual Array(1, 1, 4, 4, 9, 9)
+    squaresSortedArray(Array(-3, -2, -1, 1)) shouldEqual Array(1, 1, 4, 9)
+    squaresSortedArray(Array(-3, -2, -1, 0, 1, 2, 3)) shouldEqual Array(0, 1, 1, 4, 4, 9, 9)
+    squaresSortedArray(Array(0, 1, 2, 3)) shouldEqual Array(0, 1, 4, 9)
+    squaresSortedArray(Array(-3, -2, -1, 0)) shouldEqual Array(0, 1, 4, 9)
+  }
 
+  "Valid Parentheses" should "pass all tests" in {
+    //
+    validParentheses("") shouldEqual true
+    validParentheses("()") shouldEqual true
+    validParentheses("{{") shouldEqual false
+    validParentheses("}{") shouldEqual false
+    validParentheses("]") shouldEqual false
+    validParentheses("{[]}") shouldEqual true
+    validParentheses("{[)}") shouldEqual false
+    validParentheses("{}[)}") shouldEqual false
+    validParentheses("({[]}{{}})") shouldEqual true
+    validParentheses("{[]{{{}}}}") shouldEqual true
+  }
+
+  "Trapping Rain Water" should "pass all tests" in {
+    //
+
+  }
 }
 
