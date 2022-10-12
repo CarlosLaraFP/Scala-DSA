@@ -534,6 +534,21 @@ object LeetCodeAlgorithms extends App {
     if (stack.isEmpty) true else false
   }
 
-  //def trappingRainWater
+  def trappingRainWater(height: Array[Int]): Int = {
+    /*
+      Given n non-negative integers representing an elevation map where the width of each bar is 1,
+      compute how much water it can trap after raining.
+      For each element in the array, we find the maximum level of water it can trap after the rain,
+      which is equal to the minimum of maximum height of bars on both the sides minus its own height.
+    */
+    @tailrec
+    def countHelper(left: Int, right: Int, level: Int, count: Int): Int = {
+      if (left >= right) count
+      else if (height(left) <= height(right))
+        countHelper(left + 1, right, scala.math.max(level, height(left)), count + scala.math.max(0, level - height(left)))
+      else countHelper(left, right - 1, scala.math.max(level, height(right)), count + scala.math.max(0, level - height(right)))
+    }
+    countHelper(0, height.length - 1, 0, 0)
+  }
 }
 

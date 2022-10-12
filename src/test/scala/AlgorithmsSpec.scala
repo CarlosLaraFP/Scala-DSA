@@ -1219,7 +1219,8 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
 
   "Trapping Rain Water" should "pass all tests" in {
     //
-
+    trappingRainWater(Array(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)) shouldEqual 6
+    trappingRainWater(Array(4, 2, 0, 3, 2, 5)) shouldEqual 9
   }
 }
 
