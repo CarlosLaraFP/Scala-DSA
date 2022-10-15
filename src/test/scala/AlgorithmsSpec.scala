@@ -1361,12 +1361,15 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     var newNode = cloneGraph(nodeA)
     newNode.value shouldEqual 1
     newNode.neighbors.size shouldEqual 2
-    newNode.neighbors.head.value shouldEqual 2
-    newNode.neighbors.last.value shouldEqual 4
+    newNode.neighbors.head.value shouldEqual 4
+    newNode.neighbors.last.value shouldEqual 2
   }
 
-  "" should "pass all tests" in {
+  "Number of Islands" should "pass all tests" in {
     // Commit code
+    numberIslands(Array(Array('1','1','1','1','0'), Array('1','1','0','1','0'), Array('1','1','0','0','0'), Array('0','0','0','0','0'))) shouldEqual 1
+    numberIslands(Array(Array('1','1','0','0','0'), Array('1','1','0','0','0'), Array('0','0','1','0','0'), Array('0','0','0','1','1'))) shouldEqual 3
+    numberIslands(Array(Array('0','0','0','0','0'), Array('0','0','0','0','0'))) shouldEqual 0
   }
 }
 

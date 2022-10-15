@@ -744,5 +744,35 @@ object LeetCodeAlgorithms extends App {
       bfsHelper()
     }
   }
+
+  def numberIslands(grid: Array[Array[Char]]): Int = {
+    /*
+      Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
+      An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically.
+      You may assume all four edges of the grid are all surrounded by water.
+      Time complexity: O(N * M)
+      Worst Space complexity: O(N * M) due to recursion stack depth
+    */
+    val (height, width) = (grid.length, grid(0).length)
+    val directions = List((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    def dfsHelper(i: Int, j: Int): Unit = {
+      if (i >= 0 && j >= 0 && i < height && j < width && grid(i)(j) != '0') {
+        grid(i)(j) = '0' // every visited node should be set as '0' to mark as visited
+        directions foreach { case (x, y) => dfsHelper(i + x, j + y) }
+      }
+    }
+    var islands = 0
+    for {
+      i <- 0 until height
+      j <- 0 until width
+      if grid(i)(j) == '1'
+    } {
+      // Count the # of root nodes that trigger DFS, this # is the # of islands since each DFS starting at some root identifies an island.
+      islands += 1
+      dfsHelper(i, j)
+    }
+    islands
+  }
 }
 
