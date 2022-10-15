@@ -1,3 +1,4 @@
+import com.valinor.LeetCode
 import com.valinor.stacksQueues.{IndexedQueue, IndexedStack, LinearQueue, LinearStack, StackedQueue}
 import com.valinor.stacksQueues.StackQueueAlgorithms._
 import com.valinor.lists.{DoublyLinkedList, NestedSortedLinkedList, SortedLinkedList}
@@ -8,7 +9,7 @@ import com.valinor.trees.{BinarySearchTree, Node, Tree}
 import com.valinor.setsMaps.{HashTable, Map}
 import com.valinor.setsMaps.MapAlgorithms._
 import com.valinor.LeetCode.LeetCodeAlgorithms._
-import com.valinor.LeetCode.{ListNode, TreeNode}
+import com.valinor.LeetCode.{ListNode, Node => LeetCodeNode, TreeNode}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.{Queue => ImmutableQueue}
@@ -1345,6 +1346,23 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     sameTree(null, nodeB) shouldEqual false
 
     sameTree(null, null) shouldEqual true
+  }
+
+  "Clone Graph" should "pass all tests" in {
+    // Commit code
+    var nodeA = new LeetCodeNode(1)
+    var nodeB = new LeetCodeNode(2)
+    var nodeC = new LeetCodeNode(3)
+    var nodeD = new LeetCodeNode(4)
+    nodeB.neighbors = List(nodeA, nodeC)
+    nodeD.neighbors = List(nodeA, nodeC)
+    nodeC.neighbors = List(nodeB, nodeD)
+    nodeA.neighbors = List(nodeB, nodeD)
+    var newNode = cloneGraph(nodeA)
+    newNode.value shouldEqual 1
+    newNode.neighbors.size shouldEqual 2
+    newNode.neighbors.head.value shouldEqual 2
+    newNode.neighbors.last.value shouldEqual 4
   }
 
   "" should "pass all tests" in {

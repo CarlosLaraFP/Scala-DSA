@@ -10,6 +10,11 @@ class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null)
   var right: TreeNode = _right
 }
 
+class Node(var _value: Int) {
+  var value: Int = _value
+  var neighbors: List[Node] = List()
+}
+
 class ListNode(_x: Int = 0, _next: ListNode = null) {
   var next: ListNode = _next
   var x: Int = _x
@@ -692,7 +697,8 @@ object LeetCodeAlgorithms extends App {
       Given the roots of two binary trees p and q, write a function to check if they are the same or not.
       Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
       Breadth-first search using a MutableQueue of tuples
-      Time complexity: O(N)
+      Worst time complexity: O(N / 2)
+      Space complexity: O(N)
     */
     @tailrec
     def bfsHelper(queue: scala.collection.immutable.Queue[(TreeNode, TreeNode)]): Boolean = {
@@ -706,6 +712,37 @@ object LeetCodeAlgorithms extends App {
       }
     }
     bfsHelper(scala.collection.immutable.Queue((p, q)))
+  }
+
+  def cloneGraph(graph: Node): Node = {
+    /*
+      Given a reference of a node in a connected undirected graph, return a deep copy (clone) of the graph.
+      Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
+      The graph is represented in the test case using an adjacency list.
+      An adjacency list is a collection of unordered lists used to represent a finite graph. Each list describes the set of neighbors of a node in the graph.
+      The given node will always be the first node with val = 1. You must return the copy of the given node as a reference to the cloned graph.
+    */
+    val visited = scala.collection.mutable.Map[Node, Node]()
+    val queue = scala.collection.mutable.Queue[Node]()
+    @tailrec
+    def bfsHelper(): Node = {
+      if (queue.isEmpty) visited(graph) else {
+        val node = queue.dequeue
+        node.neighbors foreach {neighbor =>
+          if (!visited.contains(neighbor)) {
+            visited addOne (neighbor -> new Node(neighbor.value))
+            queue addOne neighbor
+          }
+          visited(node).neighbors = visited(node).neighbors prepended visited(neighbor)
+        }
+        bfsHelper()
+      }
+    }
+    if (graph == null) graph else {
+      queue addOne graph
+      visited addOne (graph -> new Node(graph.value))
+      bfsHelper()
+    }
   }
 }
 
