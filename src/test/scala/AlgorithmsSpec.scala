@@ -4,11 +4,11 @@ import com.valinor.lists.{DoublyLinkedList, NestedSortedLinkedList, SortedLinked
 import com.valinor.lists.LinkedListAlgorithms._
 import com.valinor.recursion.RecursionAlgorithms._
 import com.valinor.trees.TreeAlgorithms._
-import com.valinor.trees.{Node, Tree, BinarySearchTree}
-import com.valinor.setsMaps.{Map, HashTable}
+import com.valinor.trees.{BinarySearchTree, Node, Tree}
+import com.valinor.setsMaps.{HashTable, Map}
 import com.valinor.setsMaps.MapAlgorithms._
 import com.valinor.LeetCode.LeetCodeAlgorithms._
-import com.valinor.LeetCode.TreeNode
+import com.valinor.LeetCode.{ListNode, TreeNode}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.collection.immutable.{Queue => ImmutableQueue}
@@ -1221,6 +1221,60 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     //
     trappingRainWater(Array(0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1)) shouldEqual 6
     trappingRainWater(Array(4, 2, 0, 3, 2, 5)) shouldEqual 9
+  }
+
+  "Sparse Matrix Multiplication" should "pass all tests" in {
+    //
+    sparseMatrixMultiplication(Array(Array(0)), Array(Array(0))) shouldEqual Array(Array(0))
+    sparseMatrixMultiplication(Array(Array(1,0,0), Array(-1,0,3)), Array(Array(7,0,0), Array(0,0,0), Array(0,0,1))) shouldEqual Array(Array(7,0,0), Array(-7,0,3))
+    sparseMatrixMultiplication(Array(Array(1, -5)), Array(Array(12), Array(-1))) shouldEqual Array(Array(17))
+  }
+
+  "Add Two Numbers" should "pass all tests" in {
+    //
+    var nodeA = new ListNode(2)
+    nodeA.next = new ListNode(4)
+    nodeA.next.next = new ListNode(3)
+    var nodeB = new ListNode(5)
+    nodeB.next = new ListNode(6)
+    nodeB.next.next = new ListNode(4)
+    var result = addTwoNumbers(nodeA, nodeB)
+    result.x shouldEqual 7
+    result.next.x shouldEqual 0
+    result.next.next.x shouldEqual 8
+    // 342 + 465 = 807
+
+    nodeA = new ListNode(0)
+    nodeB = new ListNode(0)
+    result = addTwoNumbers(nodeA, nodeB)
+    result.x shouldEqual 0
+
+    nodeA = new ListNode(9)
+    nodeA.next = new ListNode(9)
+    nodeA.next.next = new ListNode(9)
+    nodeA.next.next.next = new ListNode(9)
+    nodeA.next.next.next.next = new ListNode(9)
+    nodeA.next.next.next.next.next = new ListNode(9)
+    nodeA.next.next.next.next.next.next = new ListNode(9)
+    nodeB = new ListNode(9)
+    nodeB.next = new ListNode(9)
+    nodeB.next.next = new ListNode(9)
+    nodeB.next.next.next = new ListNode(9)
+    result = addTwoNumbers(nodeA, nodeB)
+    result.x shouldEqual 8
+    result.next.x shouldEqual 9
+    result.next.next.x shouldEqual 9
+    result.next.next.next.x shouldEqual 9
+    result.next.next.next.next.x shouldEqual 0
+    result.next.next.next.next.next.x shouldEqual 0
+    result.next.next.next.next.next.next.x shouldEqual 0
+    result.next.next.next.next.next.next.next.x shouldEqual 1
+    // sum = 10,009,998
+  }
+
+  "" should "pass all tests" in {
+    //
+
   }
 }
 

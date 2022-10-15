@@ -10,6 +10,11 @@ class TreeNode(_value: Int = 0, _left: TreeNode = null, _right: TreeNode = null)
   var right: TreeNode = _right
 }
 
+class ListNode(_x: Int = 0, _next: ListNode = null) {
+  var next: ListNode = _next
+  var x: Int = _x
+}
+
 object LeetCodeAlgorithms extends App {
 
   def binarySearchLC(nums: Array[Int], target: Int): Int = {
@@ -431,13 +436,18 @@ object LeetCodeAlgorithms extends App {
       Can you solve the problem in O(1) extra space complexity? (The output array does not count as extra space for space complexity analysis.)
       Time complexity: O(2N)
     */
+    @tailrec
+    def productHelper(index: Int, result: Vector[Int], rightProduct: Int): Array[Int] = {
+      if (index < 0) result.toArray
+      else productHelper(index - 1, result.updated(index, result(index) * rightProduct), nums(index) * rightProduct)
+    }
     if (nums.length <= 1) Array[Int]()
     else {
-      @tailrec
-      def productHelper(index: Int, result: Array[Int], rightProduct: Int): Array[Int] = {
-        if (index < 0) result else productHelper(index - 1, result.updated(index, result(index) * rightProduct), nums(index) * rightProduct)
-      }
-      productHelper(nums.length - 1, nums.scanLeft(1)(_ * _).dropRight(1), 1)
+      val intermediateResult = nums.
+        foldLeft(Vector(1)){ case (array, n) => array appended array.last * n }.
+        dropRight(1)
+
+      productHelper(nums.length - 1, intermediateResult, 1)
     }
   }
 
@@ -541,14 +551,93 @@ object LeetCodeAlgorithms extends App {
       For each element in the array, we find the maximum level of water it can trap after the rain,
       which is equal to the minimum of maximum height of bars on both the sides minus its own height.
     */
+    import scala.math.max
     @tailrec
-    def countHelper(left: Int, right: Int, level: Int, count: Int): Int = {
+    def countHelper(left: Int, right: Int, currentHighest: Int, count: Int): Int = {
       if (left >= right) count
       else if (height(left) <= height(right))
-        countHelper(left + 1, right, scala.math.max(level, height(left)), count + scala.math.max(0, level - height(left)))
-      else countHelper(left, right - 1, scala.math.max(level, height(right)), count + scala.math.max(0, level - height(right)))
+        countHelper(left + 1, right, max(currentHighest, height(left)), count + max(0, currentHighest - height(left)))
+      else
+        countHelper(left, right - 1, max(currentHighest, height(right)), count + max(0, currentHighest - height(right)))
     }
     countHelper(0, height.length - 1, 0, 0)
   }
+
+  def sparseMatrixMultiplicationN(mat1: Array[Array[Int]], mat2: Array[Array[Int]]): Array[Array[Int]] = {
+    /*
+      Given two sparse matrices mat1 of size m x k and mat2 of size k x n, return the result of mat1 x mat2.
+      You may assume that multiplication is always possible.
+      Time complexity analysis: O(m * k * n) + the k*n transpose
+    */
+    val matB = mat2.transpose
+    @tailrec
+    def matrixHelper(i: Int, j: Int, currentRow: Array[Int], result: Array[Array[Int]]): Array[Array[Int]] = {
+      if (i == mat1.length) result
+      else if (j == matB.length) matrixHelper(i + 1, 0, Array(), result :+ currentRow)
+      else {
+        val element = mat1(i).zip(matB(j)).map(r => r._1 * r._2).sum
+        matrixHelper(i, j + 1, currentRow :+ element, result)
+      }
+    }
+    matrixHelper(0, 0, Array(), Array())
+  }
+
+  def sparseMatrixMultiplication(mat1: Array[Array[Int]], mat2: Array[Array[Int]]): Array[Array[Int]] = {
+    /*
+      Given two sparse matrices mat1 of size m x k and mat2 of size k x n, return the result of mat1 x mat2.
+      You may assume that multiplication is always possible.
+      Time complexity analysis: O(m * k * n)
+      Space complexity: O(m * k * n)
+    */
+    @tailrec
+    def compressMatrix(i: Int, j: Int, matrix: Array[Array[Int]], compressed: Array[Array[(Int, Int)]]): Array[Array[(Int, Int)]] = {
+      /*
+        Inputs matrix and returns compressedMatrix with only non-zero elements.
+        To build compressedMatrix, we iterate over each element of matrix and
+        if the element is non-zero push the (value, col) pair in the respective row of compressedMatrix.
+      */
+      if (i == matrix.length) compressed
+      else if (j == matrix.head.length) compressMatrix(i + 1, 0, matrix, compressed)
+      else if (matrix(i)(j) == 0) compressMatrix(i, j + 1, matrix, compressed)
+      else compressMatrix(i, j + 1, matrix, compressed.updated(i, compressed(i) :+ (matrix(i)(j), j)))
+    }
+    val compressedA = compressMatrix(0, 0, mat1, Array.fill(mat1.length) { Array() })
+    val compressedB = compressMatrix(0, 0, mat2, Array.fill(mat2.length) { Array() })
+    val result = Array.fill(mat1.length) { Array.ofDim[Int](mat2.head.length) }
+    for {
+      m <- mat1.indices
+      (elementA, k) <- compressedA(m)
+      (elementB, n) <- compressedB(k)
+    } result(m)(n) += elementA * elementB
+    result
+  }
+
+  def addTwoNumbers(l1: ListNode, l2: ListNode): ListNode = {
+    /*
+      You are given two non-empty linked lists representing two non-negative integers.
+      The digits are stored in reverse order, and each of their nodes contains a single digit.
+      Add the two numbers and return the sum as a linked list.
+      You may assume the two numbers do not contain any leading zero, except the number 0 itself.
+      Time complexity: O(N)
+    */
+    @tailrec
+    def getReversedNumber(currentNode: ListNode, number: String): BigInt = {
+      if (currentNode == null) scala.math.BigInt.apply(number)
+      else getReversedNumber(currentNode.next, currentNode.x.toString + number)
+    }
+    val sum = (getReversedNumber(l1, "") + getReversedNumber(l2, "")).toString
+    val root = new ListNode(sum.last.asDigit)
+    @tailrec
+    def buildLinkedList(currentNode: ListNode, index: Int): Unit = {
+      if (index >= 0)  {
+        currentNode.next = new ListNode(sum(index).asDigit)
+        buildLinkedList(currentNode.next, index - 1)
+      }
+    }
+    buildLinkedList(root, sum.length - 2)
+    root
+  }
+
+
 }
 
