@@ -1272,9 +1272,83 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     // sum = 10,009,998
   }
 
-  "" should "pass all tests" in {
+  "Merge Two Sorted Lists" should "pass all tests" in {
     //
+    var nodeA = new ListNode(1)
+    nodeA.next = new ListNode(2)
+    nodeA.next.next = new ListNode(4)
+    var nodeB = new ListNode(1)
+    nodeB.next = new ListNode(3)
+    nodeB.next.next = new ListNode(4)
+    var result = mergeSortedLists(nodeA, nodeB)
+    result.x shouldEqual 1
+    result.next.x shouldEqual 1
+    result.next.next.x shouldEqual 2
+    result.next.next.next.x shouldEqual 3
+    result.next.next.next.next.x shouldEqual 4
+    result.next.next.next.next.next.x shouldEqual 4
 
+    //nodeA = new ListNode(null)
+    //nodeB = new ListNode(null)
+    result = mergeSortedLists(null, null)
+    result should be (null)
+
+    //nodeA = new ListNode(null)
+    nodeB = new ListNode()
+    result = mergeSortedLists(null, nodeB)
+    result.x shouldEqual 0
+  }
+
+  "Reverse Linked List" should "pass all tests" in {
+    //
+    var nodeA = new ListNode(1)
+    nodeA.next = new ListNode(2)
+    nodeA.next.next = new ListNode(3)
+    nodeA.next.next.next = new ListNode(4)
+    nodeA.next.next.next.next = new ListNode(5)
+    var result = reverseLinkedList(nodeA)
+    result.x shouldEqual 5
+    result.next.x shouldEqual 4
+    result.next.next.x shouldEqual 3
+    result.next.next.next.x shouldEqual 2
+    result.next.next.next.next.x shouldEqual 1
+
+    nodeA = new ListNode(1)
+    result = reverseLinkedList(nodeA)
+    result.x shouldEqual 1
+
+    result = reverseLinkedList(null)
+    result should be (null)
+  }
+
+  "Same Tree" should "pass all tests" in {
+    // Commit code
+    var nodeA = new TreeNode(1)
+    nodeA.left = new TreeNode(2)
+    nodeA.right = new TreeNode(3)
+    var nodeB = new TreeNode(1)
+    nodeB.left = new TreeNode(2)
+    nodeB.right = new TreeNode(3)
+    sameTree(nodeA, nodeB) shouldEqual true
+
+    nodeA = new TreeNode(1)
+    nodeA.left = new TreeNode(2)
+    nodeA.right = new TreeNode(3)
+    nodeB = new TreeNode(1)
+    nodeB.left = new TreeNode(3)
+    nodeB.right = new TreeNode(2)
+    sameTree(nodeA, nodeB) shouldEqual false
+
+    nodeB = new TreeNode(1)
+    nodeB.left = new TreeNode(3)
+    nodeB.right = new TreeNode(2)
+    sameTree(null, nodeB) shouldEqual false
+
+    sameTree(null, null) shouldEqual true
+  }
+
+  "" should "pass all tests" in {
+    // Commit code
   }
 }
 

@@ -638,6 +638,74 @@ object LeetCodeAlgorithms extends App {
     root
   }
 
+  def mergeSortedLists(list1: ListNode, list2: ListNode): ListNode = {
+    /*
+      You are given the heads of two sorted linked lists list1 and list2.
+      Merge the two lists in a one sorted list. The list should be made by splicing together the nodes of the first two lists.
+      Return the head of the merged linked list.
+      This should be done with immutable Lists or a properly structured custom DS.
+      2-pointer approach
+      O(N) time complexity
+    */
+    val mergedList = new ListNode()
+    @tailrec
+    def sortHelper(current1: ListNode, current2: ListNode, currentFinal: ListNode): ListNode = (current1, current2) match {
+      case (null, null) => mergedList
+      case (node1, null) =>
+        currentFinal.next = node1
+        mergedList
+      case (null, node2) =>
+        currentFinal.next = node2
+        mergedList
+      case (node1, node2) if node1.x >= node2.x =>
+        currentFinal.next = new ListNode(node2.x)
+        sortHelper(node1, node2.next, currentFinal.next)
+      case (node1, node2) if node1.x < node2.x =>
+        currentFinal.next = new ListNode(node1.x)
+        sortHelper(node1.next, node2, currentFinal.next)
+    }
+    if (list1 == null && list2 == null) null else if (list1 == null) list2 else if (list2 == null) list1
+    else if (list1.x <= list2.x) {
+      mergedList.x = list1.x
+      sortHelper(list1.next, list2, mergedList)
+    }
+    else {
+      mergedList.x = list2.x
+      sortHelper(list1, list2.next, mergedList)
+    }
+  }
 
+  def reverseLinkedList(head: ListNode): ListNode = {
+    /*
+      Given the head of a singly linked list, reverse the list, and return the reversed list.
+      O(N) time complexity
+    */
+    @tailrec
+    def reverseHelper(currentNode: ListNode, reversed: ListNode = null): ListNode = {
+      if (currentNode == null) reversed else reverseHelper(currentNode.next, new ListNode(currentNode.x, reversed))
+    }
+    reverseHelper(head)
+  }
+
+  def sameTree(p: TreeNode, q: TreeNode): Boolean = {
+    /*
+      Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+      Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+      Breadth-first search using a MutableQueue of tuples
+      Time complexity: O(N)
+    */
+    @tailrec
+    def bfsHelper(queue: scala.collection.immutable.Queue[(TreeNode, TreeNode)]): Boolean = {
+      if (queue.isEmpty) true
+      else queue.dequeue match {
+        case ((null, null), newQueue) => bfsHelper(newQueue)
+        case ((null, _), _) => false
+        case ((_, null), _) => false
+        case ((x, y), newQueue) if x.value == y.value => bfsHelper(newQueue.enqueue((x.left, y.left)).enqueue((x.right, y.right)))
+        case _ => false
+      }
+    }
+    bfsHelper(scala.collection.immutable.Queue((p, q)))
+  }
 }
 
