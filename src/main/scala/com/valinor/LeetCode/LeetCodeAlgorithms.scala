@@ -813,7 +813,7 @@ object LeetCodeAlgorithms extends App {
           if (i < height && j < width && i >= 0 && j >= 0 && matrix(i)(j) > matrix(x)(y))
             cache(x)(y) = scala.math.max(cache(x)(y), dfsHelper(i, j))
         }
-        cache(x)(y) += 1
+        cache(x)(y) += 1 // count itself in addition to cached neighbor value
         cache(x)(y)
       }
     }
@@ -825,6 +825,28 @@ object LeetCodeAlgorithms extends App {
       longestPath = scala.math.max(longestPath, dfsHelper(x, y))
     }
     longestPath
+  }
+
+  def diameterBinaryTree(root: TreeNode): Int = {
+    /*
+      Given the root of a binary tree, return the length of the diameter of the tree.
+      The diameter of a binary tree is the length of the longest path between any two nodes in a tree.
+      This path may or may not pass through the root.
+      The length of a path between two nodes is represented by the number of edges between them.
+      Time and space complexity: Linear
+      Strategy: Calculate left and right recursively (DFS post-order traversal) and return max
+    */
+    import scala.math.max
+    def diameterHelper(node: TreeNode): (Int, Int) = node match {
+      case null => (0, 0)
+      case _ =>
+        val (leftHeight, leftDiameter) = diameterHelper(node.left)
+        val (rightHeight, rightDiameter) = diameterHelper(node.right)
+        val currentHeight = max(leftHeight, rightHeight) + 1
+        val currentDiameter = max(leftDiameter, rightDiameter).max(leftHeight + rightHeight)
+        (currentHeight, currentDiameter)
+    }
+    diameterHelper(root)._2
   }
 }
 

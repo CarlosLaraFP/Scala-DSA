@@ -1401,5 +1401,34 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     longestIncreasingPath(Array(Array(3, 4, 5), Array(3, 2, 6), Array(2, 2, 1))) shouldEqual 4
     longestIncreasingPath(Array(Array(1))) shouldEqual 1
   }
+
+  "Diameter of Binary Tree" should "pass all tests" in {
+    // Commit code
+    var root = new TreeNode(1)
+    root.left = new TreeNode(2)
+    root.right = new TreeNode(3)
+    root.left.left = new TreeNode(4)
+    root.left.right = new TreeNode(5)
+    diameterBinaryTree(root) shouldEqual 3
+
+    root = new TreeNode(1)
+    root.left = new TreeNode(2)
+    diameterBinaryTree(root) shouldEqual 1
+
+    root = new TreeNode(1)
+    root.left = new TreeNode(2)
+    root.right = new TreeNode(3)
+    root.left.left = new TreeNode(4)
+    root.left.right = new TreeNode(5)
+    root.left.left.left = new TreeNode(6)
+    root.left.left.right = new TreeNode(7)
+    root.left.right.left = new TreeNode(8)
+    root.left.right.right = new TreeNode(9)
+    root.left.left.left.left = new TreeNode(10)
+    root.left.left.left.right = new TreeNode(11)
+    root.left.right.left.left = new TreeNode(12)
+    root.left.right.left.right = new TreeNode(13)
+    diameterBinaryTree(root) shouldEqual 6
+  }
 }
 
