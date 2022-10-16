@@ -1371,5 +1371,28 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     numberIslands(Array(Array('1','1','0','0','0'), Array('1','1','0','0','0'), Array('0','0','1','0','0'), Array('0','0','0','1','1'))) shouldEqual 3
     numberIslands(Array(Array('0','0','0','0','0'), Array('0','0','0','0','0'))) shouldEqual 0
   }
+
+  "Lowest Common Ancestor of a Binary Tree" should "pass all tests" in {
+    // Commit code
+    val root = new TreeNode(3)
+    val node5 = new TreeNode(5)
+    root.left = node5
+    val node1 = new TreeNode(1)
+    root.right = node1
+    val node6 = new TreeNode(6)
+    root.left.left = node6
+    val node2 = new TreeNode(2)
+    root.left.right = node2
+    val node0 = new TreeNode(0)
+    root.right.left = node0
+    val node8 = new TreeNode(8)
+    root.right.right = node8
+    val node7 = new TreeNode(7)
+    root.left.right.left = node7
+    val node4 = new TreeNode(4)
+    root.left.right.right = node4
+    lowestCommonAncestor(root, node5, node8) shouldEqual root
+    lowestCommonAncestor(root, node5, node4) shouldEqual node5
+  }
 }
 
