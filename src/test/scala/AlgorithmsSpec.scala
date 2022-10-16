@@ -1394,5 +1394,12 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     lowestCommonAncestor(root, node5, node8) shouldEqual root
     lowestCommonAncestor(root, node5, node4) shouldEqual node5
   }
+
+  "Longest Increasing Path in a Matrix" should "pass all tests" in {
+    // Commit code
+    longestIncreasingPath(Array(Array(9, 9, 4), Array(6, 6, 8), Array(2, 1, 1))) shouldEqual 4
+    longestIncreasingPath(Array(Array(3, 4, 5), Array(3, 2, 6), Array(2, 2, 1))) shouldEqual 4
+    longestIncreasingPath(Array(Array(1))) shouldEqual 1
+  }
 }
 

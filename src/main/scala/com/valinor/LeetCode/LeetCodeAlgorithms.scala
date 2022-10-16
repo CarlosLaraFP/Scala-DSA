@@ -782,12 +782,49 @@ object LeetCodeAlgorithms extends App {
       that has both p and q as descendants (where we allow a node to be a descendant of itself).
     */
     if (root == null) null
-    else if (root.value == p.value || root.value == q.value) root
+    else if (root == p || root == q) root
     else {
       val left = lowestCommonAncestor(root.left, p, q)
       val right = lowestCommonAncestor(root.right, p, q)
       if (left == null) right else if (right == null) left else root
     }
+  }
+
+  def longestIncreasingPath(matrix: Array[Array[Int]]): Int = {
+    /*
+      Given an m x n integers matrix, return the length of the longest increasing path in matrix.
+      From each cell, you can either move in four directions: left, right, up, or down.
+      You may not move diagonally or move outside the boundary (i.e., wrap-around is not allowed).
+      Time complexity: O(M*N)
+      Space complexity: O(M*N)
+      (9, 9, 4)
+      (6, 6, 8)
+      (2, 1, 1) == 4
+    */
+    val directions = Vector((1, 0), (-1, 0), (0, 1), (0, -1))
+    val (height, width) = (matrix.length, matrix.head.length)
+    val cache: Array[Array[Int]] = Array.ofDim[Int](height, width)
+
+    def dfsHelper(x: Int, y: Int): Int = {
+      if (cache(x)(y) > 0) cache(x)(y)
+      else {
+        directions foreach { d =>
+          val (i, j) = (x + d._1, y + d._2)
+          if (i < height && j < width && i >= 0 && j >= 0 && matrix(i)(j) > matrix(x)(y))
+            cache(x)(y) = scala.math.max(cache(x)(y), dfsHelper(i, j))
+        }
+        cache(x)(y) += 1
+        cache(x)(y)
+      }
+    }
+    var longestPath = 0
+    for {
+      x <- 0 until height
+      y <- 0 until width
+    } {
+      longestPath = scala.math.max(longestPath, dfsHelper(x, y))
+    }
+    longestPath
   }
 }
 
