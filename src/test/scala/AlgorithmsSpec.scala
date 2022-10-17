@@ -1437,5 +1437,14 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     phoneLetterCombinations("2") should contain allOf ("a","b","c")
     phoneLetterCombinations("23") should contain allOf ("ad","ae","af","bd","be","bf","cd","ce","cf")
   }
+
+  "Generate Parentheses" should "pass all tests" in {
+    // Commit code
+    generateParentheses(1) shouldEqual List("()")
+    generateParentheses(2) should contain allOf ("(())", "()()") // 3 passes
+    generateParentheses(3) should contain allOf ("((()))", "(()())", "(())()", "()(())", "()()()") // 3 + (2 * 5) = 13 passes
+    generateParentheses(4) should contain allOf ("(((())))","((()()))","((())())","((()))()","(()(()))","(()()())","(()())()","(())(())","(())()()","()((()))","()(()())","()(())()","()()(())","()()()()")
+    // 13 + (5 * 7) = 48 passes
+  }
 }
 

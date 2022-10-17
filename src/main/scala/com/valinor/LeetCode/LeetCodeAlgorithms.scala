@@ -849,7 +849,7 @@ object LeetCodeAlgorithms extends App {
     diameterHelper(root)._2
   }
 
-  def phoneLetterCombinations(digits: String): List[String] = {
+  def phoneLetterCombinationsCL(digits: String): List[String] = {
     /*
       Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
       digits[i] is a digit in the range ['2', '9']. Return the answer in any order.
@@ -875,6 +875,56 @@ object LeetCodeAlgorithms extends App {
       else digitsHelper(index, currentList.tail, previous, combinations ::: previous.map(_ appended currentList.head))
     }
     if (digits.isEmpty) Nil else digitsHelper(0, map(digits.charAt(0)), List(""), Nil)
+  }
+
+  def phoneLetterCombinations(digits: String): List[String] = {
+    /*
+    */
+    val map = Map[Char, List[Char]](
+      '2' -> List('a', 'b', 'c'),
+      '3' -> List('d', 'e', 'f'),
+      '4' -> List('g', 'h', 'i'),
+      '5' -> List('j', 'k', 'l'),
+      '6' -> List('m', 'n', 'o'),
+      '7' -> List('p', 'q', 'r', 's'),
+      '8' -> List('t', 'u', 'v'),
+      '9' -> List('w', 'x', 'y', 'z')
+    )
+    @tailrec
+    def digitsHelper(index: Int, combinations: List[String]): List[String] = {
+      if (index == digits.length) combinations
+      // Builds a new collection by applying a function to all elements of this collection and using the elements of the resulting collections
+        // flatMap: 1 to many (for each string, returns a collection)
+      else digitsHelper(index + 1, combinations.flatMap(x => map(digits(index)).map(y => x + y)))
+    }
+    if (digits.isEmpty) List() else digitsHelper(0, List(""))
+  }
+
+  def generateParentheses(n: Int): List[String] = {
+    /*
+      Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+      1 <= n <= 8
+      Time complexity:
+      Space complexity:
+    */
+    val set = scala.collection.mutable.Set[String]()
+    @tailrec
+    def parenthesesHelper(iteration: Int, parentheses: List[String]): List[String] = {
+      if (iteration == n) parentheses
+      else parenthesesHelper(iteration + 1, parentheses.flatMap(s =>
+        (0 until s.length) collect {
+          new PartialFunction[Int, String] {
+            def apply(i: Int): String = {
+              val current = s.patch(i, "()", 0)
+              set addOne current
+              current
+            }
+            def isDefinedAt(i: Int): Boolean = !set.contains(s.patch(i, "()", 0))
+          }
+        }
+      ))
+    }
+    parenthesesHelper(1, List("()"))
   }
 }
 
