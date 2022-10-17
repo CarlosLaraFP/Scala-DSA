@@ -848,5 +848,33 @@ object LeetCodeAlgorithms extends App {
     }
     diameterHelper(root)._2
   }
+
+  def phoneLetterCombinations(digits: String): List[String] = {
+    /*
+      Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent.
+      digits[i] is a digit in the range ['2', '9']. Return the answer in any order.
+      A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
+      Time complexity: O(N!) ?
+      2 == a, b, c
+      "23" == "ad","ae","af","bd","be","bf","cd","ce","cf"
+    */
+    val map = Map[Char, List[Char]](
+      '2' -> List('a', 'b', 'c'),
+      '3' -> List('d', 'e', 'f'),
+      '4' -> List('g', 'h', 'i'),
+      '5' -> List('j', 'k', 'l'),
+      '6' -> List('m', 'n', 'o'),
+      '7' -> List('p', 'q', 'r', 's'),
+      '8' -> List('t', 'u', 'v'),
+      '9' -> List('w', 'x', 'y', 'z')
+    )
+    @tailrec
+    def digitsHelper(index: Int, currentList: List[Char], previous: List[String], combinations: List[String]): List[String] = {
+      if (currentList.isEmpty && digits.lift(index + 1).isDefined) digitsHelper(index + 1, map(digits.charAt(index + 1)), combinations, Nil)
+      else if (currentList.isEmpty && digits.lift(index + 1).isEmpty) combinations
+      else digitsHelper(index, currentList.tail, previous, combinations ::: previous.map(_ appended currentList.head))
+    }
+    if (digits.isEmpty) Nil else digitsHelper(0, map(digits.charAt(0)), List(""), Nil)
+  }
 }
 

@@ -1430,5 +1430,12 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     root.left.right.left.right = new TreeNode(13)
     diameterBinaryTree(root) shouldEqual 6
   }
+
+  "Letter Combinations of a Phone Number" should "pass all tests" in {
+    // Commit code
+    phoneLetterCombinations("") shouldEqual Nil
+    phoneLetterCombinations("2") should contain allOf ("a","b","c")
+    phoneLetterCombinations("23") should contain allOf ("ad","ae","af","bd","be","bf","cd","ce","cf")
+  }
 }
 
