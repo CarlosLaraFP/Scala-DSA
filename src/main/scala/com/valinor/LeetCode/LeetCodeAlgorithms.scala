@@ -904,27 +904,50 @@ object LeetCodeAlgorithms extends App {
     /*
       Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
       1 <= n <= 8
-      Time complexity:
-      Space complexity:
+      Time complexity: O(~2*N!)
+      Space complexity: Output size
     */
     val set = scala.collection.mutable.Set[String]()
     @tailrec
     def parenthesesHelper(iteration: Int, parentheses: List[String]): List[String] = {
       if (iteration == n) parentheses
-      else parenthesesHelper(iteration + 1, parentheses.flatMap(s =>
+      else parenthesesHelper(iteration + 1, parentheses flatMap { s =>
         (0 until s.length) collect {
           new PartialFunction[Int, String] {
+            def isDefinedAt(i: Int): Boolean = !set.contains(s.patch(i, "()", 0))
             def apply(i: Int): String = {
               val current = s.patch(i, "()", 0)
               set addOne current
               current
             }
-            def isDefinedAt(i: Int): Boolean = !set.contains(s.patch(i, "()", 0))
           }
         }
-      ))
+      })
     }
     parenthesesHelper(1, List("()"))
+  }
+
+  def combinationSum(candidates: Array[Int], target: Int): List[List[Int]] = {
+    /*
+      Given an array of distinct integers and a target integer,
+      return a list of all unique combinations of candidates where the chosen numbers sum to target.
+      You may return the combinations in any order.
+      The same number may be chosen from candidates an unlimited number of times.
+      Two combinations are unique if the frequency of at least one of the chosen numbers is different.
+      Array(2, 3, 6, 7), 7) == List(2, 2, 3), List(7)
+      Strategy: Backtracking => it incrementally builds candidates to the solutions, and
+      abandons a candidate ("backtrack") as soon as it determines that this candidate cannot lead to a final solution.
+      Time complexity:
+      Space complexity:
+    */
+    def combinationsHelper(index: Int, total: Int, currentList: List[Int], result: List[List[Int]]): List[List[Int]] = {
+      if (total > target) result
+      else if (target == total) result prepended currentList
+      else (index until candidates.length).
+        toList.
+        flatMap(i => combinationsHelper(i, total + candidates(i), candidates(i) :: currentList, result))
+    }
+    if (candidates.isEmpty) Nil else combinationsHelper(0, 0, Nil, List[List[Int]]())
   }
 }
 

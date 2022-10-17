@@ -1446,5 +1446,12 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     generateParentheses(4) should contain allOf ("(((())))","((()()))","((())())","((()))()","(()(()))","(()()())","(()())()","(())(())","(())()()","()((()))","()(()())","()(())()","()()(())","()()()()")
     // 13 + (5 * 7) = 48 passes
   }
+
+  "Combination Sum" should "pass all tests" in {
+    // Commit code
+    combinationSum(Array(2, 3, 6, 7), 7).map(l => l.sorted) should contain allOf (List(2, 2, 3), List(7))
+    combinationSum(Array(2, 3, 5), 8).map(l => l.sorted) should contain allOf (List(2, 2, 2, 2), List(2, 3, 3), List(3, 5))
+    combinationSum(Array(2), 1) shouldEqual Nil
+  }
 }
 
