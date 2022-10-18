@@ -978,17 +978,35 @@ object LeetCodeAlgorithms extends App {
       Given an array nums of distinct integers, return all the possible permutations.
       You can return the answer in any order.
       Time complexity: O(sum over N of N factorial / N - k)
+      Space complexity: O(N!)
       Backtracking Strategy: 1-to-many flatMap containing the recursive call. Branches per input element.
     */
     def permutationsHelper(list: List[Int]): List[List[Int]] = {
       if (list.isEmpty) List(List())
-      else list.flatMap(i => {
-        val currentIndex = list.indexOf(i)
+      else list flatMap { element => {
+        val currentIndex = list indexOf element
         val remaining = list.take(currentIndex) ::: list.drop(currentIndex + 1)
-        permutationsHelper(remaining).map(i :: _)
-      })
+        permutationsHelper(remaining) map { element :: _ }
+      }}
     }
     permutationsHelper(items.toList)
+  }
+
+  def subsets(nums: Array[Int]): List[List[Int]] = {
+    /*
+      Given an integer array nums of unique elements, return all possible subsets (the power set).
+      The solution set must not contain duplicate subsets. Return the solution in any order.
+      1, 2
+      1, 2, 3
+    */
+    @tailrec
+    def subsetHelper(list: List[Int], result: List[List[Int]]): List[List[Int]] = {
+      list match {
+        case Nil => result
+        case head :: tail => subsetHelper(tail, result ::: result.map(head :: _))
+      }
+    }
+    subsetHelper(nums.toList, List(List()))
   }
 }
 

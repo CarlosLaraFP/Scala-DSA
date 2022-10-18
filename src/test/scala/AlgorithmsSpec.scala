@@ -1464,5 +1464,18 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     testC.size shouldEqual 6
     testC should contain allOf (List(1,2,3), List(1,3,2), List(2,1,3), List(2,3,1), List(3,1,2), List(3,2,1))
   }
+
+  "Subsets" should "pass all tests" in {
+    // Commit code
+    val testA = subsets(Array(1)).map(_.sorted)
+    testA.size shouldEqual 2
+    testA should contain allOf (Nil, List(1))
+    val testB = subsets(Array(1, 2)).map(_.sorted)
+    testB.size shouldEqual 4
+    testB should contain allOf(Nil, List(1), List(2), List(1, 2))
+    val testC = subsets(Array(1, 2, 3)).map(_.sorted)
+    testC.size shouldEqual 8
+    testC should contain allOf(Nil, List(1), List(2), List(3), List(1, 2), List(1, 3), List(2, 3), List(1, 2, 3))
+  }
 }
 
