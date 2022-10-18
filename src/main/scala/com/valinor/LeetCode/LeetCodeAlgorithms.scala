@@ -935,8 +935,8 @@ object LeetCodeAlgorithms extends App {
       The same number may be chosen from candidates an unlimited number of times.
       Two combinations are unique if the frequency of at least one of the chosen numbers is different.
       Array(2, 3, 6, 7), 7) == List(2, 2, 3), List(7)
-      Strategy: Backtracking => it incrementally builds candidates to the solutions, and
-      abandons a candidate ("backtrack") as soon as it determines that this candidate cannot lead to a final solution.
+      Strategy: Backtracking => it incrementally builds candidates to the solutions and
+      abandons a candidate as soon as it determines that this candidate cannot lead to a final solution.
       Time complexity:
       Space complexity:
     */
@@ -947,7 +947,48 @@ object LeetCodeAlgorithms extends App {
         toList.
         flatMap(i => combinationsHelper(i, total + candidates(i), candidates(i) :: currentList, result))
     }
-    if (candidates.isEmpty) Nil else combinationsHelper(0, 0, Nil, List[List[Int]]())
+    if (candidates.isEmpty) Nil else combinationsHelper(0, 0, Nil, Nil)
+  }
+
+  def permutationsI(nums: Array[Int]): List[List[Int]] = {
+    /*
+      Given an array nums of distinct integers, return all the possible permutations.
+      You can return the answer in any order.
+      Time complexity:
+      1, 2, 3
+      Strategy: Backtracking. Swapping elements at indices with 2 pointers, skipping the current element.
+    */
+    @tailrec
+    def permutationsHelper(index: Int, iteration: Int, insertions: Int, innerIndex: Int, current: List[List[Int]], perms: List[List[Int]]): List[List[Int]] = {
+      if (index < 0) perms
+      else if (perms.isEmpty) permutationsHelper(index - 1, iteration + 1, 0, 0, Nil, current)
+      else if (insertions == iteration) permutationsHelper(index, iteration, 0, 0, current, perms.tail)
+      else {
+        val (front, back) = perms.head.splitAt(innerIndex)
+        val perm = front ++ List(nums(index)) ++ back
+        permutationsHelper(index, iteration, insertions + 1, innerIndex + 1, perm :: current, perms)
+      }
+    }
+    if (nums.isEmpty) Nil
+    else permutationsHelper(nums.length - 1, 1, 0, 0, Nil, List(List[Int]()))
+  }
+
+  def permutations(items: Array[Int]): List[List[Int]] = {
+    /*
+      Given an array nums of distinct integers, return all the possible permutations.
+      You can return the answer in any order.
+      Time complexity: O(sum over N of N factorial / N - k)
+      Backtracking Strategy: 1-to-many flatMap containing the recursive call. Branches per input element.
+    */
+    def permutationsHelper(list: List[Int]): List[List[Int]] = {
+      if (list.isEmpty) List(List())
+      else list.flatMap(i => {
+        val currentIndex = list.indexOf(i)
+        val remaining = list.take(currentIndex) ::: list.drop(currentIndex + 1)
+        permutationsHelper(remaining).map(i :: _)
+      })
+    }
+    permutationsHelper(items.toList)
   }
 }
 

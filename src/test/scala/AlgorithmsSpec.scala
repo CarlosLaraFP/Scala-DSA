@@ -1453,5 +1453,16 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     combinationSum(Array(2, 3, 5), 8).map(l => l.sorted) should contain allOf (List(2, 2, 2, 2), List(2, 3, 3), List(3, 5))
     combinationSum(Array(2), 1) shouldEqual Nil
   }
+
+  "Permutations" should "pass all tests" in {
+    // Commit code
+    permutations(Array(1)) shouldEqual List(List(1))
+    val testB = permutations(Array(1, 2))
+    testB.size shouldEqual 2
+    testB should contain allOf (List(1, 2), List(2, 1))
+    val testC = permutations(Array(1, 2, 3))
+    testC.size shouldEqual 6
+    testC should contain allOf (List(1,2,3), List(1,3,2), List(2,1,3), List(2,3,1), List(3,1,2), List(3,2,1))
+  }
 }
 
