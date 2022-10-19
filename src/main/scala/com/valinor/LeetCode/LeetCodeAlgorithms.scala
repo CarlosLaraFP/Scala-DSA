@@ -998,15 +998,47 @@ object LeetCodeAlgorithms extends App {
       The solution set must not contain duplicate subsets. Return the solution in any order.
       1, 2
       1, 2, 3
+      Strategy: Build upon the previous result in 2 parts: Keep the previous result ::: modified each element with current
     */
     @tailrec
-    def subsetHelper(list: List[Int], result: List[List[Int]]): List[List[Int]] = {
-      list match {
-        case Nil => result
-        case head :: tail => subsetHelper(tail, result ::: result.map(head :: _))
+    def subsetHelper(list: List[Int], result: List[List[Int]]): List[List[Int]] = list match {
+      case Nil => result
+      case head :: tail => subsetHelper(tail, result ::: result.map(head :: _ ))
+    }
+    subsetHelper(nums.toList, List(Nil))
+  }
+
+  def wordSearch(board: Array[Array[Char]], word: String): Boolean = {
+    /*
+      Given an m x n grid of characters board and a string word, return true if word exists in the grid.
+      The word can be constructed from letters of sequentially adjacent cells,
+      where adjacent cells are horizontally or vertically neighboring.
+      The same letter cell may not be used more than once.
+      Time complexity: O(M * N)
+      Strategy: DFS and recursively building the word out of the chars
+    */
+    val directions = List((-1, 0), (1, 0), (0, -1), (0, 1))
+
+    def searchHelper(board: Array[Array[Char]], i: Int, j: Int, index: Int): Boolean = {
+      if (index == word.length) true
+      else if (i < 0 || j < 0 || i == board.length || j == board(i).length) false
+      else if (board(i)(j) != word(index)) false
+      else {
+        val temp = board(i)(j)
+        board(i)(j) = '.'
+        val wordExists = directions.exists(d => searchHelper(board, i + d._1, j + d._2, index + 1))
+        board(i)(j) = temp
+        wordExists
       }
     }
-    subsetHelper(nums.toList, List(List()))
+
+    val results = for {
+      i <- 0 to board.length
+      j <- 0 to board.head.length
+      if searchHelper(board, i, j, 0)
+    } yield true
+
+    if (results.isEmpty) false else true
   }
 }
 

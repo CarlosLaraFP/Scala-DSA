@@ -1477,5 +1477,13 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     testC.size shouldEqual 8
     testC should contain allOf(Nil, List(1), List(2), List(3), List(1, 2), List(1, 3), List(2, 3), List(1, 2, 3))
   }
+
+  "Word Search" should "pass all tests" in {
+    // Commit code
+    wordSearch(Array(Array('A','B','C','E'), Array('S','F','C','S'), Array('A','D','E','E')), "ABCCED") shouldEqual true
+    wordSearch(Array(Array('A','B','C','E'), Array('S','F','C','S'), Array('A','D','E','E')), "SEE") shouldEqual true
+    wordSearch(Array(Array('A','B','C','E'), Array('S','F','C','S'), Array('A','D','E','E')), "CBA") shouldEqual true
+    wordSearch(Array(Array('A','B','C','E'), Array('S','F','C','S'), Array('A','D','E','E')), "ABCB") shouldEqual false
+  }
 }
 
