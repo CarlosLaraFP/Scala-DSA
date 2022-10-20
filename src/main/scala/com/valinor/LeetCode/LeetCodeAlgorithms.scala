@@ -1014,31 +1014,57 @@ object LeetCodeAlgorithms extends App {
       The word can be constructed from letters of sequentially adjacent cells,
       where adjacent cells are horizontally or vertically neighboring.
       The same letter cell may not be used more than once.
-      Time complexity: O(M * N)
-      Strategy: DFS and recursively building the word out of the chars
+      Time complexity: O(M * N * 3^L)
+      Space complexity: O(L) recursion stack depth
     */
     val directions = List((-1, 0), (1, 0), (0, -1), (0, 1))
+    val (height, width) = (board.length, board.head.length)
 
-    def searchHelper(board: Array[Array[Char]], i: Int, j: Int, index: Int): Boolean = {
+    def searchHelper(i: Int, j: Int, index: Int): Boolean = {
       if (index == word.length) true
-      else if (i < 0 || j < 0 || i == board.length || j == board(i).length) false
-      else if (board(i)(j) != word(index)) false
+      else if (i < 0 || j < 0 || i == height || j == width || board(i)(j) != word(index)) false
       else {
-        val temp = board(i)(j)
+        val currentChar = board(i)(j)
         board(i)(j) = '.'
-        val wordExists = directions.exists(d => searchHelper(board, i + d._1, j + d._2, index + 1))
-        board(i)(j) = temp
+        val wordExists = directions.exists(d => searchHelper(i + d._1, j + d._2, index + 1))
+        board(i)(j) = currentChar
         wordExists
       }
     }
-
     val results = for {
-      i <- 0 to board.length
-      j <- 0 to board.head.length
-      if searchHelper(board, i, j, 0)
+      i <- 0 until height
+      j <- 0 until width
+      if searchHelper(i, j, 0)
     } yield true
 
     if (results.isEmpty) false else true
+  }
+
+  def medianSortedArrays(nums1: Array[Int], nums2: Array[Int]): Double = {
+    /*
+      Given two sorted arrays nums1 and nums2 of size m and n respectively, return the median of the two sorted arrays.
+      The overall run time complexity should be O(log (m+n)).
+      Median -> if (m + n) is odd, middle element else if (m + n) is even, 2 middle elements.
+      Even O((m+n) / 2) is trivial.
+    */
+    @tailrec
+    def medianHelper(numsA: Array[Int], i: Int, numsB: Array[Int], j: Int, k: Int): Int = {
+      if (i >= nums1.length) nums2(j + k - 1)
+      else if (j >= nums2.length) nums1(i + k - 1)
+      else if (k == 1) scala.math.min(nums1(i), nums2(j))
+      else {
+        val m1 = i + k / 2 - 1
+        val m2 = j + k / 2 - 1
+        val mid1 = if (m1 >= numsA.length) Integer.MAX_VALUE else numsA(m1)
+        val mid2 = if (m2 >= numsB.length) Integer.MAX_VALUE else numsB(m2)
+        if (mid1 < mid2) medianHelper(numsA, m1 + 1, numsB, j, k - k / 2)
+        else medianHelper(numsA, i, numsB, m2 + 1, k - k / 2)
+      }
+    }
+    val size = nums1.length + nums2.length
+    val first = medianHelper(nums1, 0, nums2, 0, (size + 1) / 2).toDouble
+    val second = medianHelper(nums1, 0, nums2, 0, (size + 2) / 2).toDouble
+    (first + second) / 2.0
   }
 }
 

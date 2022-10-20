@@ -1485,5 +1485,12 @@ class AlgorithmsSpec extends AnyFlatSpec with Matchers {
     wordSearch(Array(Array('A','B','C','E'), Array('S','F','C','S'), Array('A','D','E','E')), "CBA") shouldEqual true
     wordSearch(Array(Array('A','B','C','E'), Array('S','F','C','S'), Array('A','D','E','E')), "ABCB") shouldEqual false
   }
+
+  "Median of Two Sorted Arrays" should "pass all tests" in {
+    // Commit code
+    medianSortedArrays(Array(1, 3), Array(2)) shouldEqual 2.0 // merged array = [1,2,3] and median is 2
+    medianSortedArrays(Array(1, 2), Array(3, 4)) shouldEqual 2.5 // merged array = [1,2,3,4] and median is (2 + 3) / 2 = 2.5
+    medianSortedArrays(Array(1, 2, 3, 4, 5), Array(6, 7, 8, 9)) shouldEqual 5.0 // index: 9 // 2
+  }
 }
 
